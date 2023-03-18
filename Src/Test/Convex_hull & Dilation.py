@@ -16,10 +16,12 @@ lung_contours, _ = cv2.findContours(lung_mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_S
 lung_hull = cv2.convexHull(lung_contours[0])
 
 # Dilate mặt nạ phổi
-lung_mask = cv2.dilate(lung_mask, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (10,10)))
+kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5)) 
+dilated_mask = cv2.dilate(lung_mask, kernel, iterations=1) 
 
 # Hiển thị kết quả
 cv2.drawContours(img, [lung_hull], 0, (0,255,0), 2)
+cv2.imshow('Dilated Mask', dilated_mask)
 cv2.imshow('Lung mask with convex hull', img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
